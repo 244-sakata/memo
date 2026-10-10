@@ -4,17 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fff4f7">
-<title>Shopping & Memo 💕</title>
+<title>HONEY MEMO 💕</title>
 
 <!-- 🍯 スマホのホーム画面用アイコン設定 -->
-<link rel="icon" href="icon.jpg" type="image/jpeg">
-<link rel="apple-touch-icon" href="icon.jpg">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="apple-touch-icon-precomposed" href="icon.png">
+
+<!-- PWA/Web App 設定 -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="HONEY MEMO">
 
 <style>
 :root{
-  --bg:#fff7fa; --card:#fff; --pink:#ff7fa3; --pink2:#ffd9e4;
-  --text:#4d3d43; --muted:#9b858d; --green:#73c99a; --line:#f1dce3;
-  --danger:#ff6b8b;
+ --bg:#fff7fa; --card:#fff; --pink:#ff7fa3; --pink2:#ffd9e4;
+ --text:#4d3d43; --muted:#9b858d; --green:#73c99a; --line:#f1dce3;
+ --danger:#ff6b8b;
 }
 *{box-sizing:border-box}
 body{margin:0;background:linear-gradient(160deg,#fff8fb,#fff1f6);color:var(--text);
@@ -24,21 +31,21 @@ button,input,textarea,select{font:inherit}
 header{text-align:center;padding:10px 0 18px;position:relative}
 
 /* 🐝 はちみつのまわりを飛ぶ演出 */
-.honey-box{position:relative;display:inline-block;width:70px;height:70px;margin:0 auto;cursor:pointer}
+.honey-box{position:relative;display:inline-block;width:70px;height:70px;margin:0 auto}
 .logo{font-size:40px;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite}
 .bee{position:absolute;font-size:18px;pointer-events:none}
 .bee1{animation:fly1 4s ease-in-out infinite}
 .bee2{animation:fly2 3.5s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes fly1{
-  0%{transform:translate(-24px, 10px) rotate(-10deg) scale(0.9)}
-  50%{transform:translate(28px, -15px) rotate(15deg) scale(1.1)}
-  100%{transform:translate(-24px, 10px) rotate(-10deg) scale(0.9)}
+ 0%{transform:translate(-24px, 10px) rotate(-10deg) scale(0.9)}
+ 50%{transform:translate(28px, -15px) rotate(15deg) scale(1.1)}
+ 100%{transform:translate(-24px, 10px) rotate(-10deg) scale(0.9)}
 }
 @keyframes fly2{
-  0%{transform:translate(26px, 15px) rotate(10deg) scale(1)}
-  50%{transform:translate(-22px, -12px) rotate(-15deg) scale(0.9)}
-  100%{transform:translate(26px, 15px) rotate(10deg) scale(1)}
+ 0%{transform:translate(26px, 15px) rotate(10deg) scale(1)}
+ 50%{transform:translate(-22px, -12px) rotate(-15deg) scale(0.9)}
+ 100%{transform:translate(26px, 15px) rotate(10deg) scale(1)}
 }
 
 h1{margin:4px 0 3px;font-size:26px;letter-spacing:0.5px}
@@ -58,7 +65,6 @@ border-radius:20px;padding:15px;box-shadow:0 4px 14px #e9cfd84d;cursor:pointer;t
 .addPage:hover{background:#ffe4ed}
 .hidden{display:none!important}
 
-/* 戻るボタンとタイトルをスッキリ配置 */
 .topbar{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .topbar-row{display:flex;align-items:center;justify-content:space-between}
 .topbar h2{margin:0;font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px;flex:1}
@@ -105,439 +111,284 @@ border-radius:20px;padding:15px;box-shadow:0 4px 14px #e9cfd84d;cursor:pointer;t
 <body>
 <div class="app">
 <header>
-  <div class="honey-box" id="honeyBox" onclick="onLogoClick()" title="タップしてね">
-    <div class="logo" id="logoIcon">🍯</div>
-    <div class="bee bee1">🐝</div>
-    <div class="bee bee2">🐝</div>
-  </div>
-  <h1 id="mainTitle">Shopping & Memo 💕</h1>
-  <div class="sub" id="subTitle">MANAMI & TSUYOSHI v3.1</div>
+ <div class="honey-box">
+ <div class="logo">🍯</div>
+ <div class="bee bee1">🐝</div>
+ <div class="bee bee2">🐝</div>
+ </div>
+ <h1 id="mainTitle">HONEY MEMO 💕</h1>
+ <div class="sub" id="subTitle">MANAMI & TSUYOSHI v3.1</div>
 </header>
 
 <div id="home">
-  <div class="tabs">
-    <button class="tab active" data-filter="all" id="tabAll">🏠 ぜんぶ</button>
-    <button class="tab" data-filter="shopping" id="tabShopping">🛒 買い物</button>
-    <button class="tab" data-filter="memo" id="tabMemo">📝 メモ</button>
-  </div>
-  <div id="pages" class="pages"></div>
-  <button class="addPage" id="btnAddPage" onclick="openPageModal()">＋ 新しいページを作る</button>
+ <div class="tabs">
+ <button class="tab active" data-filter="all" id="tabAll">🏠 ぜんぶ</button>
+ <button class="tab" data-filter="shopping" id="tabShopping">🛒 買い物</button>
+ <button class="tab" data-filter="memo" id="tabMemo">📝 メモ</button>
+ </div>
+ <div id="pages" class="pages"></div>
+ <button class="addPage" id="btnAddPage" onclick="openPageModal()">＋ 新しいページを作る</button>
 </div>
 
 <div id="detail" class="hidden">
-  <div class="topbar">
-    <div><button class="back" id="btnBack" onclick="goHome()">← 戻る</button></div>
-    <div class="topbar-row">
-      <h2 id="detailTitleContainer">
-        <span id="detailTitle"></span>
-        <button class="edit-title-btn" onclick="openEditTitleModal()" title="タイトル変更">✏️</button>
-      </h2>
-      <div class="page-actions">
-        <button class="icon-btn" onclick="confirmDeleteCurrentPage()" title="Delete">🗑️</button>
-      </div>
-    </div>
-  </div>
-  <div id="detailBody"></div>
+ <div class="topbar">
+ <div><button class="back" id="btnBack" onclick="goHome()">← 戻る</button></div>
+ <div class="topbar-row">
+ <h2 id="detailTitleContainer">
+ <span id="detailTitle"></span>
+ <button class="edit-title-btn" onclick="openEditTitleModal()" title="タイトル変更">✏️</button>
+ </h2>
+ <div class="page-actions">
+ <button class="icon-btn" onclick="confirmDeleteCurrentPage()" title="Delete">🗑️</button>
+ </div>
+ </div>
+ </div>
+ <div id="detailBody"></div>
 </div>
 </div>
 
 <div id="modal" class="modal hidden">
  <div class="sheet">
-  <h3 id="modalTitle">✨ 新しいページを追加</h3>
-  <label id="lblPageName">ページタイトル</label>
-  <input id="pageName" placeholder="例：COSTCO / メモ">
-  <label id="lblPageType">種類</label>
-  <select id="pageType">
-    <option value="shopping" id="optShopping">🛒 買い物リスト</option>
-    <option value="memo" id="optMemo">📝 覚え書き・メモ</option>
-  </select>
-  <div class="actions">
-   <button class="cancel" id="btnCancel" onclick="closeModal()">やめる</button>
-   <button class="ok" id="btnOk" onclick="createPage()">作る💕</button>
-  </div>
+ <h3 id="modalTitle">✨ 新しいページを追加</h3>
+ <label id="lblPageName">ページタイトル</label>
+ <input type="text" id="pageNameInput" placeholder="例: スーパー、ドラッグストアなど">
+ <label>アイコン</label>
+ <select id="pageEmojiSelect">
+  <option value="🛒">🛒 買い物</option>
+  <option value="📝">📝 メモ</option>
+  <option value="💡">💡 アイデア</option>
+  <option value="🎁">🎁 ほしいもの</option>
+  <option value="⭐">⭐ お気に入り</option>
+ </select>
+ <label>種類</label>
+ <select id="pageTypeSelect">
+  <option value="shopping">買い物リスト (チェックボックス)</option>
+  <option value="memo">メモ (自由記述)</option>
+ </select>
+ <div class="actions">
+  <button class="cancel" onclick="closeModal()">キャンセル</button>
+  <button class="ok" onclick="savePageModal()">保存</button>
  </div>
-</div>
-
-<!-- タイトル変更用モーダル -->
-<div id="editModal" class="modal hidden">
- <div class="sheet">
-  <h3>✏️ タイトルを変更</h3>
-  <label>新しいタイトル</label>
-  <input id="editPageNameInput">
-  <div class="actions">
-   <button class="cancel" onclick="closeEditModal()">やめる</button>
-   <button class="ok" onclick="savePageName()">変更する💕</button>
-  </div>
  </div>
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script>
-// --- バージョン管理・自動更新ロジック ---
-const CURRENT_VERSION = "v3.1";
-// ※ここにネット上の最新バージョン情報（例: version.json など）や、自動更新先のURLを設定できます
-const VERSION_CHECK_URL = ""; // 必要に応じて設定
+let store = JSON.parse(localStorage.getItem('honey_memo_data') || '{"pages":[]}');
+let currentFilter = 'all';
+let currentPageId = null;
 
-let hasUpdateAvailable = false;
-
-// ロゴ（🍯）がクリックされた時の挙動
-function onLogoClick() {
-  if (hasUpdateAvailable) {
-    toast("✨ 最新版にアップデートしています...");
-    setTimeout(() => {
-      // キャッシュをクリアして最新のページを再読み込み
-      window.location.reload(true);
-    }, 1000);
-  } else {
-    toast("🍯 はにー＆つよし愛用中 💕 v3.1");
-  }
+function saveStore(){
+ localStorage.setItem('honey_memo_data', JSON.stringify(store));
 }
 
-// 起動時にアップデートを確認する関数
-function checkForUpdates() {
-  if(!VERSION_CHECK_URL) return;
-  fetch(VERSION_CHECK_URL + "?t=" + Date.now())
-    .then(res => res.json())
-    .then(data => {
-      if(data.version && data.version !== CURRENT_VERSION) {
-        hasUpdateAvailable = true;
-        // アイコンを 💩 に変更！
-        document.getElementById("logoIcon").textContent = "💩";
-        document.getElementById("subTitle").textContent = "✨ タップしてアップデートしてね！";
-        toast("🚨 新しいバージョンがあります！アイコンをタップしてね💩");
-      }
-    })
-    .catch(err => console.log("Update check skip:", err));
+function showToast(msg){
+ const t = document.getElementById('toast');
+ t.innerText = msg;
+ t.classList.add('show');
+ setTimeout(()=>t.classList.remove('show'), 2000);
 }
 
-const userLang = (navigator.language || navigator.userLanguage || "ja").toLowerCase();
-let currentLang = "ja";
-if (userLang.startsWith("tl") || userLang.startsWith("fil")) {
-  currentLang = "tl";
-} else if (userLang.startsWith("en")) {
-  currentLang = "en";
-}
-
-const lang = {
-  ja: {
-    tabAll: "🏠 ぜんぶ",
-    tabShopping: "🛒 買い物",
-    tabMemo: "📝 メモ",
-    addPage: "＋ 新しいページを作る",
-    emptyPages: "ページがまだないよ✨下のボタンから作ってね！",
-    emptyItems: "まだアイテムがありません🛒",
-    unreadCount: "件未購入",
-    back: "← 戻る",
-    itemPlaceholder: "商品名を入力…",
-    addBtn: "追加",
-    clearBtn: "チェック済を消去",
-    hintShopping: "🟩 未購入 ⇄ ✅ 完了（タップで切替）",
-    memoPlaceholder: "ここに自由に書いてね ✍️",
-    modalTitle: "✨ 新しいページを追加",
-    lblPageName: "ページタイトル",
-    lblPageType: "種類",
-    optShopping: "🛒 買い物リスト",
-    optMemo: "📝 覚え書き・メモ",
-    btnCancel: "やめる",
-    btnOk: "作る💕",
-    msgDelItem: "アイテムを消したよ🗑️",
-    msgClear: "チェック済をクリアしたよ✨",
-    msgDelPageConfirm: "を削除してもいい？",
-    msgDelPage: "ページを削除したよ🗑️",
-    msgCreatePage: "新しいページを作ったよ💕",
-    msgNameChanged: "タイトルを変更したよ✨",
-    updatedText: "最終更新: "
-  },
-  tl: {
-    tabAll: "🏠 Lahat",
-    tabShopping: "🛒 Pamimili",
-    tabMemo: "📝 Memo",
-    addPage: "＋ Gumawa ng bagong pahina",
-    emptyPages: "Wala pang pahina✨ Gumawa sa ibaba!",
-    emptyItems: "Wala pang item🛒",
-    unreadCount: "hindi pa nabibili",
-    back: "← Bumalik",
-    itemPlaceholder: "Ilagay ang pangalan ng item...",
-    addBtn: "Idagdag",
-    clearBtn: "Burahin ang tapos na",
-    hintShopping: "🟩 Hindi pa ⇄ ✅ Tapos na (I-tap para palitan)",
-    memoPlaceholder: "Magsulat dito nang malaya ✍️",
-    modalTitle: "✨ Magdagdag ng bagong pahina",
-    lblPageName: "Pangalan ng Pahina",
-    lblPageType: "Uri",
-    optShopping: "🛒 Listahan ng Pamimili",
-    optMemo: "📝 Tala / Memo",
-    btnCancel: "Kanselahin",
-    btnOk: "Gawin💕",
-    msgDelItem: "Nabura na ang item🗑️",
-    msgClear: "Na-clear na ang mga tapos na✨",
-    msgDelPageConfirm: "Gusto mo bang burahin ang",
-    msgDelPage: "Nabura na ang pahina🗑️",
-    msgCreatePage: "Nagawa na ang bagong pahina💕",
-    msgNameChanged: "Binago ang pangalan✨",
-    updatedText: "Huling na-update: "
-  },
-  en: {
-    tabAll: "🏠 All",
-    tabShopping: "🛒 Shopping",
-    tabMemo: "📝 Memo",
-    addPage: "＋ Create new page",
-    emptyPages: "No pages yet ✨ Create one below!",
-    emptyItems: "No items yet 🛒",
-    unreadCount: "left",
-    back: "← Back",
-    itemPlaceholder: "Enter item name...",
-    addBtn: "Add",
-    clearBtn: "Clear checked",
-    hintShopping: "🟩 Unchecked ⇄ ✅ Completed (Tap to toggle)",
-    memoPlaceholder: "Type your notes here ✍️",
-    modalTitle: "✨ Add New Page",
-    lblPageName: "Page Title",
-    lblPageType: "Type",
-    optShopping: "🛒 Shopping List",
-    optMemo: "📝 Memo / Note",
-    btnCancel: "Cancel",
-    btnOk: "Create 💕",
-    msgDelItem: "Item deleted 🗑️",
-    msgClear: "Cleared checked items ✨",
-    msgDelPageConfirm: "Are you sure you want to delete",
-    msgDelPage: "Page deleted 🗑️",
-    msgCreatePage: "New page created 💕",
-    msgNameChanged: "Title updated ✨",
-    updatedText: "Last updated: "
-  }
-};
-
-const t = lang[currentLang];
-
-document.getElementById("tabAll").textContent = t.tabAll;
-document.getElementById("tabShopping").textContent = t.tabShopping;
-document.getElementById("tabMemo").textContent = t.tabMemo;
-document.getElementById("btnAddPage").textContent = t.addPage;
-document.getElementById("btnBack").textContent = t.back;
-document.getElementById("modalTitle").textContent = t.modalTitle;
-document.getElementById("lblPageName").textContent = t.lblPageName;
-document.getElementById("lblPageType").textContent = t.lblPageType;
-document.getElementById("optShopping").textContent = t.optShopping;
-document.getElementById("optMemo").textContent = t.optMemo;
-document.getElementById("btnCancel").textContent = t.btnCancel;
-document.getElementById("btnOk").textContent = t.btnOk;
-
-const KEY="honeyAkoPrototypeV7_v2";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYoXH2p5ZZqPq3Aa_33aHig35ThCMI0l7B_UoAFdfaG54Fg8EOBZDo6y0FN27Qh-Ia/exec";
-
-const seed={
- pages:[
-  {id:"p1",name:currentLang==="tl"?"Costco":currentLang==="en"?"Costco":"COSTCO",type:"shopping",items:[
-   {ja:currentLang==="tl"?"Karne ng Baka":currentLang==="en"?"Beef":"牛肉",checked:false},
-   {ja:currentLang==="tl"?"Gatas":currentLang==="en"?"Milk":"牛乳",checked:false},
-   {ja:currentLang==="tl"?"Itlog":currentLang==="en"?"Eggs":"卵",checked:true}
-  ]},
-  {id:"p2",name:currentLang==="tl"?"Mensahe para kay Honey":currentLang==="en"?"Note for Honey":"Honeyへの伝言",type:"memo",text:"",updatedAt:""},
- ]
-};
-
-let data=JSON.parse(localStorage.getItem(KEY)||"null")||seed;
-let current=null, filter="all";
-
-function save(){
-  localStorage.setItem(KEY,JSON.stringify(data));
-  syncToServer();
-}
-
-// クラウド（GAS）へ自動同期
-function syncToServer(){
-  if(!SCRIPT_URL) return;
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ pages: data.pages })
-  }).catch(err => console.log("Sync error:", err));
-}
-
-// 起動時にクラウドから最新データを取得
-function fetchFromServer(){
-  if(!SCRIPT_URL) return;
-  fetch(SCRIPT_URL + "?method=get")
-    .then(res => res.json())
-    .then(res => {
-      if(res.status === "success" && res.pages && res.pages.length > 0){
-        data.pages = res.pages;
-        localStorage.setItem(KEY, JSON.stringify(data));
-        renderPages();
-        if(current){
-          let updatedCurrent = data.pages.find(p => p.id === current.id);
-          if(updatedCurrent){
-            current = updatedCurrent;
-            if(document.getElementById("detail").classList.contains("hidden") === false){
-              renderDetail();
-            }
-          }
-        }
-      }
-    })
-    .catch(err => console.log("Fetch error:", err));
-}
-
-function toast(msg){let x=document.getElementById("toast");x.textContent=msg;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1400)}
-
-function getFormattedDate(date = new Date()) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  const h = String(date.getHours()).padStart(2, '0');
-  const min = String(date.getMinutes()).padStart(2, '0');
-  return `${y}.${m}.${d} ${h}:${min}`;
-}
-
-function renderPages(){
- const el=document.getElementById("pages"); el.innerHTML="";
- let list=data.pages.filter(p=>filter==="all"||p.type===filter);
- if(list.length===0){
-   el.innerHTML=`<div style="text-align:center;color:var(--muted);padding:30px 0;font-size:14px;">${t.emptyPages}</div>`;
-   return;
+function renderHome(){
+ const pagesDiv = document.getElementById('pages');
+ pagesDiv.innerHTML = '';
+ const filtered = store.pages.filter(p => currentFilter === 'all' || p.type === currentFilter);
+ 
+ if(filtered.length === 0){
+  pagesDiv.innerHTML = '<div class="hint">まだページがありません。「新しいページを作る」から追加してね！</div>';
+  return;
  }
- list.forEach(p=>{
-  let subText = "";
-  if(p.type==="shopping"){
-    let count = p.items.filter(i=>!i.checked).length;
-    subText = count + " " + t.unreadCount;
+
+ filtered.forEach(p => {
+  const el = document.createElement('div');
+  el.className = 'page';
+  let countText = '';
+  if(p.type === 'shopping'){
+   const total = p.items ? p.items.length : 0;
+   const checked = p.items ? p.items.filter(i=>i.checked).length : 0;
+   countText = `${checked}/${total} 件完了`;
   } else {
-    subText = p.updatedAt ? (t.updatedText + p.updatedAt) : (currentLang==="ja"?"まだ更新なし":currentLang==="tl"?"Wala pang update":"No updates yet");
+   countText = p.content ? `${p.content.length} 文字` : '空のメモ';
   }
-  let d=document.createElement("div");d.className="page";
-  d.innerHTML=`<div class="emoji">${p.type==="shopping"?"🛒":"📝"}</div><div class="pbody"><div class="name">${esc(p.name)}</div><small>${subText}</small></div>`;
-  d.onclick=()=>openPage(p.id);el.appendChild(d);
+  
+  el.innerHTML = `
+   <div class="emoji">${p.emoji || '📝'}</div>
+   <div class="pbody">
+    <div class="name">${p.name}</div>
+    <small>${countText}</small>
+   </div>
+  `;
+  el.onclick = () => openPage(p.id);
+  pagesDiv.appendChild(el);
  });
 }
 
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+document.querySelectorAll('.tab').forEach(btn => {
+ btn.onclick = () => {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  renderHome();
+ };
+});
 
 function openPage(id){
- current=data.pages.find(p=>p.id===id); if(!current)return;
- document.getElementById("home").classList.add("hidden");document.getElementById("detail").classList.remove("hidden");
- document.getElementById("detailTitle").textContent=current.name; renderDetail();
-}
-
-function renderDetail(){
- const b=document.getElementById("detailBody");
- if(current.type==="memo"){
-  b.innerHTML=`<div class="card">
-    <div id="updateTimeLabel" class="note-update-sub">${current.updatedAt ? (t.updatedText + current.updatedAt) : ""}</div>
-    <textarea id="note" class="note" placeholder="${t.memoPlaceholder}" style="margin-top:8px">${esc(current.text||"")}</textarea>
-  </div>`;
-  document.getElementById("note").addEventListener("input",e=>{
-    current.text=e.target.value;
-    current.updatedAt=getFormattedDate();
-    document.getElementById("updateTimeLabel").textContent = t.updatedText + current.updatedAt;
-    save();
-  });
-  return;
-}
+ currentPageId = id;
+ const p = store.pages.find(x => x.id === id);
+ if(!p) return;
  
- b.innerHTML=`<div class="card">
-  <div class="addrow"><input id="itemInput" placeholder="${t.itemPlaceholder}"><button onclick="addItem()">${t.addBtn}</button></div>
- </div>
+ document.getElementById('home').classList.add('hidden');
+ document.getElementById('detail').classList.remove('hidden');
+ document.getElementById('detailTitle').innerText = `${p.emoji || ''} ${p.name}`;
  
- <div class="list-header">
-   <span>Shopping List</span>
-   <button class="clear-btn" onclick="clearCheckedItems()">${t.clearBtn}</button>
- </div>
- <div id="items" class="items"></div>
- <div class="hint">${t.hintShopping}</div>`;
- const inp=document.getElementById("itemInput"); 
- inp.addEventListener("keydown",e=>{if(e.key==="Enter")addItem()});
- renderItems();
-}
-
-function renderItems(){
- const el=document.getElementById("items");el.innerHTML="";
- if(current.items.length===0){
-   el.innerHTML=`<div style="text-align:center;color:var(--muted);padding:20px 0;font-size:13px;">${t.emptyItems}</div>`;
-   return;
- }
- [...current.items].map((item, originalIndex)=>({...item, originalIndex}))
- .sort((a,b)=>a.checked - b.checked)
- .forEach((it)=>{
-  let d=document.createElement("div");d.className="item "+(it.checked?"checked":"");
-  d.innerHTML=`<div class="box" onclick="toggleItem(${it.originalIndex})">${it.checked?"✅":"🟩"}</div><div class="itemmain" onclick="toggleItem(${it.originalIndex})"><div class="itemname">${esc(it.ja)}</div></div><button class="item-del" onclick="deleteItem(${it.originalIndex})" title="Delete">✕</button>`;
-  el.appendChild(d);
- });
-}
-
-function toggleItem(idx){
- current.items[idx].checked=!current.items[idx].checked;
- save(); renderItems(); renderPages();
-}
-
-function deleteItem(idx){
- current.items.splice(idx,1);
- save(); renderItems(); renderPages();
- toast(t.msgDelItem);
-}
-
-function clearCheckedItems(){
- current.items=current.items.filter(i=>!i.checked);
- save(); renderItems(); renderPages();
- toast(t.msgClear);
-}
-
-function addItem(){
- const input=document.getElementById("itemInput"), raw=input.value.trim(); if(!raw)return;
- current.items.unshift({ja:raw, checked:false});
- save();input.value="";renderItems();renderPages();
-}
-
-function confirmDeleteCurrentPage(){
- if(confirm(`「${current.name}」 ${t.msgDelPageConfirm}`)){
-  data.pages=data.pages.filter(p=>p.id!==current.id);
-  save(); goHome(); toast(t.msgDelPage);
- }
+ renderDetailBody(p);
 }
 
 function goHome(){
- current=null;
- document.getElementById("detail").classList.add("hidden");
- document.getElementById("home").classList.remove("hidden");
- renderPages();
+ currentPageId = null;
+ document.getElementById('detail').classList.add('hidden');
+ document.getElementById('home').classList.remove('hidden');
+ renderHome();
 }
 
-function openPageModal(){document.getElementById("modal").classList.remove("hidden");document.getElementById("pageName").focus()}
-function closeModal(){document.getElementById("modal").classList.add("hidden")}
-
-function createPage(){
- const name=document.getElementById("pageName").value.trim()||"New Page",type=document.getElementById("pageType").value;
- data.pages.push({id:"p"+Date.now(),name,type,...(type==="shopping"?{items:[]}:{text:"",updatedAt:""})});
- save(); closeModal(); document.getElementById("pageName").value=""; renderPages(); toast(t.msgCreatePage);
+function renderDetailBody(p){
+ const body = document.getElementById('detailBody');
+ if(p.type === 'shopping'){
+  p.items = p.items || [];
+  body.innerHTML = `
+   <div class="card">
+    <div class="addrow">
+     <input type="text" id="newItemInput" placeholder="買うものを入力...">
+     <button onclick="addItem()">追加</button>
+    </div>
+    <div class="list-header">
+     <span>リスト (${p.items.length})</span>
+     <button class="clear-btn" onclick="clearCheckedItems()">完了分を削除</button>
+    </div>
+    <div class="items" id="itemsList"></div>
+   </div>
+  `;
+  renderItems(p);
+ } else {
+  body.innerHTML = `
+   <div class="card">
+    <textarea class="note" id="noteInput" placeholder="自由にメモを入力してね..." oninput="updateNote()">${p.content || ''}</textarea>
+    <div class="note-update-sub">自動保存されます</div>
+   </div>
+  `;
+ }
 }
 
-function openEditTitleModal(){
- document.getElementById("editPageNameInput").value = current.name;
- document.getElementById("editModal").classList.remove("hidden");
- document.getElementById("editPageNameInput").focus();
-}
-function closeEditModal(){
- document.getElementById("editModal").classList.add("hidden");
-}
-function savePageName(){
- const newName = document.getElementById("editPageNameInput").value.trim();
- if(!newName)return;
- current.name = newName;
- document.getElementById("detailTitle").textContent = newName;
- save();
- closeEditModal();
- renderPages();
- toast(t.msgNameChanged);
+function renderItems(p){
+ const list = document.getElementById('itemsList');
+ if(!list) return;
+ list.innerHTML = '';
+ p.items.forEach((item, index) => {
+  const row = document.createElement('div');
+  row.className = `item ${item.checked ? 'checked' : ''}`;
+  row.innerHTML = `
+   <div class="box" onclick="toggleItem(${index})">${item.checked ? '☑️' : '⬜'}</div>
+   <div class="itemmain" onclick="toggleItem(${index})">
+    <div class="itemname">${item.text}</div>
+   </div>
+   <button class="item-del" onclick="deleteItem(${index})">✕</button>
+  `;
+  list.appendChild(row);
+ });
 }
 
-document.querySelectorAll(".tab").forEach(tBtn=>tBtn.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));tBtn.classList.add("active");filter=tBtn.dataset.filter;renderPages()});
+function addItem(){
+ const input = document.getElementById('newItemInput');
+ if(!input || !input.value.trim()) return;
+ const p = store.pages.find(x => x.id === currentPageId);
+ if(p){
+  p.items.push({ text: input.value.trim(), checked: false });
+  saveStore();
+  input.value = '';
+  renderItems(p);
+ }
+}
 
-// 起動時にサーバーから最新データを取得して反映
-fetchFromServer();
-checkForUpdates();
-renderPages();
+function toggleItem(index){
+ const p = store.pages.find(x => x.id === currentPageId);
+ if(p && p.items[index]){
+  p.items[index].checked = !p.items[index].checked;
+  saveStore();
+  renderItems(p);
+ }
+}
+
+function deleteItem(index){
+ const p = store.pages.find(x => x.id === currentPageId);
+ if(p){
+  p.items.splice(index, 1);
+  saveStore();
+  renderItems(p);
+ }
+}
+
+function clearCheckedItems(){
+ const p = store.pages.find(x => x.id === currentPageId);
+ if(p){
+  p.items = p.items.filter(i => !i.checked);
+  saveStore();
+  renderItems(p);
+  showToast('完了した項目を削除しました');
+ }
+}
+
+function updateNote(){
+ const p = store.pages.find(x => x.id === currentPageId);
+ const textarea = document.getElementById('noteInput');
+ if(p && textarea){
+  p.content = textarea.value;
+  saveStore();
+ }
+}
+
+function openPageModal(){
+ document.getElementById('pageNameInput').value = '';
+ document.getElementById('modal').classList.remove('hidden');
+}
+
+function closeModal(){
+ document.getElementById('modal').classList.add('hidden');
+}
+
+function savePageModal(){
+ const name = document.getElementById('pageNameInput').value.trim();
+ const emoji = document.getElementById('pageEmojiSelect').value;
+ const type = document.getElementById('pageTypeSelect').value;
+ if(!name){
+  alert('ページタイトルを入力してね');
+  return;
+ }
+ const newPage = {
+  id: 'page_' + Date.now(),
+  name: name,
+  emoji: emoji,
+  type: type,
+  items: [],
+  content: ''
+ };
+ store.pages.push(newPage);
+ saveStore();
+ closeModal();
+ renderHome();
+ showToast('新しいページを作成しました✨');
+}
+
+function confirmDeleteCurrentPage(){
+ if(confirm('このページを削除してもいいですか？')){
+  store.pages = store.pages.filter(x => x.id !== currentPageId);
+  saveStore();
+  goHome();
+  showToast('ページを削除しました');
+ }
+}
+
+renderHome();
 </script>
 </body>
 </html>
